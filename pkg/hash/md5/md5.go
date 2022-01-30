@@ -1,4 +1,4 @@
-// Copyright 2020 Meador Inge.
+// Copyright 2022 Meador Inge.
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
