@@ -108,15 +108,29 @@ var testCases = []struct {
 	{b("\x05\xbf\x05Y\x0c\x8dW\xf8\x9fs\x973\x90U(\xd1U\x14\xda\x9e8u_4\x16\xc5\x85b\xcaO")},
 }
 
-func TestHex(t *testing.T) {
-	for _, encoding := range EncodingNames() {
-		encoding := NewEncoding(encoding)
+func TestEncoding(t *testing.T) {
+	for _, encodingName := range EncodingNames() {
+		encoding := NewEncoding(encodingName)
 		for _, test := range testCases {
 			output := encoding.Encode(test.input)
 			input, _ := encoding.Decode(output)
 			if bytes.Compare(test.input, input) != 0 {
-				t.Fatalf("HEX(UNHEX('%v')) != '%v'", test.input, test.input)
+				t.Fatalf("Decode(Encode('%v')) != '%v'", test.input, test.input)
 			}
 		}
+	}
+}
+
+func TestCryptopalsChallenge1(t *testing.T) {
+	input := b("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")
+	expectedOutput := b("SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t")
+
+	hexEncoding := NewEncoding("hex")
+	base64Encoding := NewEncoding("base64")
+
+	bytez, _ := hexEncoding.Decode(input)
+	base64Bytez := base64Encoding.Encode(bytez)
+	if bytes.Compare(base64Bytez, expectedOutput) != 0 {
+		t.Fatalf("BASE64(UNHEX('%v')) result '%v' != '%v'", input, base64Bytez, expectedOutput)
 	}
 }

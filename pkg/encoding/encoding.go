@@ -5,6 +5,7 @@
 package encoding
 
 import (
+	"github.com/meadori/cryptocrypt/pkg/encoding/base64"
 	"github.com/meadori/cryptocrypt/pkg/encoding/hex"
 )
 
@@ -13,6 +14,7 @@ var encodings map[string]func() Encoding
 func init() {
 	encodings = make(map[string]func() Encoding)
 	encodings["hex"] = func() Encoding { return hex.HexEncoding{} }
+	encodings["base64"] = func() Encoding { return base64.Base64Encoding{} }
 }
 
 // A simple interface that all encodings will implement to encode

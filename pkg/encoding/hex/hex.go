@@ -22,6 +22,7 @@ func fromHex(b byte) (byte, error) {
 		return 0, fmt.Errorf("hex: unexpected byte '%b' found during decode", b)
 	}
 }
+
 func Encode(src []byte) []byte {
 	i, dst := 0, make([]byte, 2*len(src))
 	for _, b := range src {
