@@ -7,8 +7,6 @@ package encoding
 import (
 	"bytes"
 	"testing"
-
-	"github.com/meadori/cryptocrypt/pkg/encoding/hex"
 )
 
 func b(str string) []byte {
@@ -111,11 +109,14 @@ var testCases = []struct {
 }
 
 func TestHex(t *testing.T) {
-	for _, test := range testCases {
-		output := hex.Encode(test.input)
-		input, _ := hex.Decode(output)
-		if bytes.Compare(test.input, input) != 0 {
-			t.Fatalf("HEX(UNHEX('%v')) != '%v'", test.input, test.input)
+	for _, encoding := range EncodingNames() {
+		encoding := NewEncoding(encoding)
+		for _, test := range testCases {
+			output := encoding.Encode(test.input)
+			input, _ := encoding.Decode(output)
+			if bytes.Compare(test.input, input) != 0 {
+				t.Fatalf("HEX(UNHEX('%v')) != '%v'", test.input, test.input)
+			}
 		}
 	}
 }

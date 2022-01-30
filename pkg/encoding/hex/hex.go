@@ -6,18 +6,10 @@ package hex
 
 import "fmt"
 
+// A zero-based index map for converting nibbles into hexadecimal bytes.
 const hexmap = "0123456789abcdef"
 
-func Encode(src []byte) []byte {
-	i, dst := 0, make([]byte, 2*len(src))
-	for _, b := range src {
-		dst[i] = hexmap[b>>4]
-		dst[i+1] = hexmap[b&0x0f]
-		i += 2
-	}
-	return dst
-}
-
+// Helper function for converting a hexadecimal-encoded nibble into a nibble.
 func fromHex(b byte) (byte, error) {
 	switch {
 	case (b >= '0') && (b <= '9'):
@@ -29,6 +21,15 @@ func fromHex(b byte) (byte, error) {
 	default:
 		return 0, fmt.Errorf("hex: unexpected byte '%b' found during decode", b)
 	}
+}
+func Encode(src []byte) []byte {
+	i, dst := 0, make([]byte, 2*len(src))
+	for _, b := range src {
+		dst[i] = hexmap[b>>4]
+		dst[i+1] = hexmap[b&0x0f]
+		i += 2
+	}
+	return dst
 }
 
 func Decode(src []byte) ([]byte, error) {
@@ -56,4 +57,14 @@ func Decode(src []byte) ([]byte, error) {
 	}
 
 	return dst, nil
+}
+
+type HexEncoding struct{}
+
+func (e HexEncoding) Encode(src []byte) []byte {
+	return Encode(src)
+}
+
+func (e HexEncoding) Decode(src []byte) ([]byte, error) {
+	return Decode(src)
 }
