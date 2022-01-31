@@ -5,7 +5,6 @@
 package attack
 
 import (
-	"fmt"
 	"github.com/meadori/cryptocrypt/pkg/cipher"
 )
 
@@ -71,9 +70,6 @@ func BreakSingleByteXor(ciphertext []byte) ([]byte, byte) {
 	for b := 1; b < 256; b += 1 {
 		plaintext := xorCipher.Decrypt(ciphertext, []byte{byte(b)})
 		newScore := score(plaintext)
-		if plaintext[0] == 67 {
-			fmt.Println(newScore)
-		}
 		if newScore > maxScore {
 			maxScore = newScore
 			bestPlaintext = plaintext
@@ -81,6 +77,5 @@ func BreakSingleByteXor(ciphertext []byte) ([]byte, byte) {
 		}
 	}
 
-	fmt.Println(maxScore)
 	return bestPlaintext, key
 }
