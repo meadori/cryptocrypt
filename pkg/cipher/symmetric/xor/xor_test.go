@@ -7,6 +7,8 @@ package xor
 import (
 	"bytes"
 	"testing"
+
+	"github.com/meadori/cryptocrypt/pkg/encoding"
 )
 
 func b(str string) []byte {
@@ -39,5 +41,18 @@ func TestDecrypt(t *testing.T) {
 		if bytes.Compare(plaintext, test.plaintext) != 0 {
 			t.Fatalf("XOR-DECRYPT('%v') result '%v' != '%v'", test.ciphertext, plaintext, test.plaintext)
 		}
+	}
+}
+
+func TestCryptopalsChallenge4(t *testing.T) {
+	plaintext := `Burning 'em, if you ain't quick and nimble
+I go crazy when I hear a cymbal`
+
+	hexEncoding := encoding.NewEncoding("hex")
+	ciphertext := hexEncoding.Encode(Encrypt(b(plaintext), b("ICE")))
+	expectedCiphertext := b("0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f")
+
+	if bytes.Compare(ciphertext, expectedCiphertext) != 0 {
+		t.Fatalf("result '%s' != '%s'", ciphertext, expectedCiphertext)
 	}
 }
