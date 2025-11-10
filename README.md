@@ -1,6 +1,6 @@
 # cryptocrypt
 
-<img src="logo.png" width="256" height="256"/>
+<img src="logo.png" width="256" height="384"/>
 
 A Go language crypt of cryptographic algorithms. This project is meant to:
 
